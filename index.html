@@ -3,32 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>اطلاعات سیستم</title>
-</head>
-<body>
-    <div class="container">
-        <h1>اطلاعات سیستم</h1>
-        <button id="fetchButton">دریافت اطلاعات سیستم</button>
-        <div id="info"></div>
-        <div id="status" class="status"></div>
-    </div>
-
+    <title>Shadow Battalion - Ali Hokmran</title>
     <script>
-        document.getElementById('fetchButton').addEventListener('click', async function() {
-            const response = await fetch('/get_info');
-            const data = await response.json();
-            const infoDiv = document.getElementById('info');
-            const statusDiv = document.getElementById('status');
+        function fetchInfo() {
+            fetch('/get_info')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('info').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-            if (data.status === 'success') {
-                infoDiv.innerHTML = data.message.replace(/\n/g, '<br>');
-                statusDiv.innerHTML = 'اطلاعات با موفقیت ارسال شد!';
-            } else {
-                statusDiv.innerHTML = 'خطا: ' + data.message;
-                statusDiv.classList.add('error');
-            }
+        // فراخوانی تابع fetchInfo به محض بارگذاری صفحه
+        document.addEventListener('DOMContentLoaded', (event) => {
+            fetchInfo();
         });
     </script>
+</head>
+<body>
+    <h1>Ali Hokmran Leadee Shadow Battalion </h1>
+    <pre id="info"></pre>
 </body>
 </html>
